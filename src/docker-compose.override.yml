@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  nats-server:
+    ports:
+      - 4222:4222
+
+  redis:
+    ports:
+      - 6379:6379
+
+  chat-client-1:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - Serilog__MinimumLevel__Override__NATS=Information
+      - NatsConnectionString=nats://nats-server:4222
+      - RedisConnectionString=redis:6379
+      - Username=client1
+    ports:
+      - 5001:80
+
+  chat-client-2:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - Serilog__MinimumLevel__Override__NATS=Information
+      - NatsConnectionString=nats://nats-server:4222
+      - RedisConnectionString=redis:6379
+      - Username=client2
+    ports:
+      - 5002:80

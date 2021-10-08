@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  nats-server:
+    image: nats:2
+
+  redis:
+    image: redis:alpine 
+
+  chat-client-1:
+    image: ${REGISTRY:-chamilpubudu}/nats.poc.chat.client:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Chat/NATS.POC.Chat.Client/Dockerfile
+    links:
+      - nats-server
+      - redis
+    depends_on:
+      - nats-server
+      - redis
+
+  chat-client-2:
+    image: ${REGISTRY:-chamilpubudu}/nats.poc.chat.client:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Chat/NATS.POC.Chat.Client/Dockerfile
+    links:
+      - nats-server
+      - redis
+    depends_on:
+      - nats-server
+      - redis
